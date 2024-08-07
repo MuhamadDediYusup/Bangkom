@@ -1,0 +1,24 @@
+<style class="file-spt-pdfview">
+    .custom-input-pdf {
+        width: 90%;
+        float: right;
+    }
+
+    .custom-input-pdf input:hover {
+        cursor: pointer;
+    }
+
+    .custom-icon-pdf {
+        display: inline-block;
+        width: 5%;
+        height: calc(2.25rem + 6px);
+        float: left;
+        padding-top: 7px;
+        padding-left: 12px;
+    }
+
+    .style-icon-pdf {
+        font-size: 22px;
+        color: #ff8c00;
+    }
+</style>

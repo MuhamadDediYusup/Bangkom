@@ -1,0 +1,61 @@
+/**
+ *
+ * You can write your CSS code here, DO NOT touch the default JavaScript file
+ * because it will make it harder for you to update.
+ *
+ */
+
+/*# sourceMappingURL=custom.css.map */
+
+/* make placeholder to italic */
+/* input::-webkit-input-placeholder {font-style: italic; } */
+::-webkit-input-placeholder {
+    font-style: italic;
+    color: #999;
+} /* WebKit browsers */
+::-moz-placeholder {
+    font-style: italic;
+    color: #999;
+} /* Mozilla Firefox 19+ */
+:-moz-placeholder {
+    font-style: italic;
+    color: #999;
+} /* Mozilla Firefox 4 to 18 */
+:-ms-input-placeholder {
+    font-style: italic;
+    color: #999;
+} /* Internet Explorer 10+ */
+
+/* One Click Scrool Top Button*/
+.scroll-top {
+    width: 28px;
+    height: 28px;
+    line-height: 45px;
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-box-pack: center;
+    -ms-flex-pack: center;
+    justify-content: center;
+    -webkit-box-align: center;
+    -ms-flex-align: center;
+    align-items: center;
+    font-size: 14px;
+    color: #fff !important;
+    position: fixed;
+    bottom: 55px;
+    right: 30px;
+    z-index: 9;
+    cursor: pointer;
+    -webkit-transition: all 0.3s ease-out 0s;
+    transition: all 0.3s ease-out 0s;
+    border-radius: 5px;
+}
+
+.scroll-top:hover {
+    -webkit-box-shadow: 0 1rem 3rem rgba(35, 38, 45, 0.15) !important;
+    box-shadow: 0 1rem 3rem rgba(35, 38, 45, 0.15) !important;
+    -webkit-transform: translate3d(0, -5px, 0);
+    transform: translate3d(0, -5px, 0);
+    background-color: #061e5c;
+}
