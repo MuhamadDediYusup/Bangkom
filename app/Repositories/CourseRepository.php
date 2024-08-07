@@ -77,34 +77,4 @@ class CourseRepository implements CoursesInterface
             }])
             ->firstOrFail();
     }
-
-    /**
-     * Get progress course by user_id and module_id percentage of course completion and total course duration
-     */
-    public function getProgressCourse($course_id, $user_id)
-    {
-        $course = Course::with('modules.lessons')->find($course_id);
-
-        $totalLessons = 0;
-        foreach ($course->modules as $module) {
-            $totalLessons += $module->lessons->count();
-        }
-
-        $completedLessons = LessonStatus::with('lesson')
-            ->join('lms_lessons', 'lms_lessons.id', '=', 'lms_lesson_status.lesson_id')
-            ->where('lms_lesson_status.user_id', $user_id)
-            ->where('lms_lessons.course_id', $course_id)
-            ->whereNotNull('lms_lesson_status.completed_at')
-            ->get();
-        dd($completedLessons);
-
-        if ($totalLessons == 0) {
-            return 0;
-        }
-
-        $progress = ($completedLessons->count() / $totalLessons) * 100;
-
-        dd($progress);
-        return $progress;
-    }
 }

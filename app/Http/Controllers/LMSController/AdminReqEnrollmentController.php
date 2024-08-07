@@ -112,6 +112,8 @@ class AdminReqEnrollmentController extends Controller
     public function destroy($id)
     {
         $requestAccess = RequestAccess::findOrfail($id);
+        $enrollment = Enrollment::where('user_id', $requestAccess->user_id)->where('course_id', $requestAccess->course_id)->delete();
+
         $requestAccess->delete();
 
         return redirect()->back()->with('success', 'Permintaan berhasil dihapus');

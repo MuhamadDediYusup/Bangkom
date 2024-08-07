@@ -23,7 +23,8 @@ class Enrollment extends Model
         'user_id',
         'course_id',
         'entry_user',
-        'edit_user'
+        'edit_user',
+        'enrolled_at'
     ];
 
     public $timestamps = false;
@@ -35,12 +36,12 @@ class Enrollment extends Model
     // Relationships
     public function user()
     {
-        return $this->belongsTo(User::class, 'user_id');
+        return $this->belongsTo(User::class, 'user_id', 'user_id'); // Adjusted to match User primary key
     }
 
     public function course()
     {
-        return $this->belongsTo(Course::class, 'course_id', 'course_id');
+        return $this->belongsTo(Course::class, 'course_id', 'course_id'); // Adjusted to match Course primary key
     }
 
     public function employee()
