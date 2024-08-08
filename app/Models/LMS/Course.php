@@ -70,23 +70,22 @@ class Course extends Model
 
     public function getProgressAttribute()
     {
-        $totalLessons = $this->modules()->withCount(['lessons as completed_lessons_count' => function ($query) {
-            $query->whereHas('lessonStatus', function ($query) {
-                $query->where('user_id', Auth::id())
-                    ->where('is_completed', 1);
-            });
-        }])
-            ->get()
-            ->sum('lessons_count');
+        $totalLessons = 0;
+        $completedLessons = 0;
+        $userId = Auth::id(); // get the authenticated user's id
 
-        $completedLessons = $this->modules()->withCount(['lessons as completed_lessons_count' => function ($query) {
-            $query->whereHas('lessonStatus', function ($query) {
-                $query->where('user_id', Auth::id())
-                    ->where('is_completed', 1);
-            });
-        }])
-            ->get()
-            ->sum('completed_lessons_count');
+        foreach ($this->modules as $module) {
+            $totalLessons += $module->lessons->count();
+            foreach ($module->lessons as $lesson) {
+                $lessonStatus = LessonStatus::where('lesson_id', $lesson->lesson_id)
+                    ->where('user_id', $userId)
+                    ->where('is_completed', 1)
+                    ->first();
+                if ($lessonStatus) {
+                    $completedLessons++;
+                }
+            }
+        }
 
         return $totalLessons > 0 ? ($completedLessons / $totalLessons) * 100 : 0;
     }

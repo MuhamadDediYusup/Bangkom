@@ -29,37 +29,15 @@ class CourseController extends Controller
 
     public function allCourse(Request $request)
     {
-        $userId = Auth::user()->user_id; // Mendapatkan ID pengguna yang sedang terautentikasi
-
-        // Mengambil kursus yang aktif dan sesuai dengan pencarian, serta memeriksa pendaftaran pengguna
-        $courses = Course::select('lms_courses.*')
-            ->leftJoin('lms_enrollments', function ($join) use ($userId) {
-                $join->on('lms_courses.course_id', '=', 'lms_enrollments.course_id')
-                    ->where('lms_enrollments.user_id', '=', $userId);
-            })
-            ->with('category', 'instructor')
-            ->orderBy('entry_time', 'DESC')
-            ->where('lms_courses.is_active', '1')
-            ->when($request->search_course, function ($query) use ($request) {
-                $query->where('lms_courses.course_name', 'like', '%' . $request->search_course . '%');
-            })
-            ->get();
-
-        // Menentukan kemajuan untuk setiap kursus
-        foreach ($courses as $course) {
-            // Cek apakah pengguna terdaftar dalam kursus ini
-            $enrollment = $course->enrollments()->where('user_id', $userId)->first();
-
-            if ($enrollment) {
-                $course->progress = $course->progress; // Menghitung kemajuan menggunakan accessor
-            } else {
-                $course->progress = null; // Tidak ada kemajuan jika tidak terdaftar
-            }
-        }
-
         $data = [
             'title' => 'Daftar Kursus',
-            'courses' => $courses,
+            'courses' => Course::with('category', 'instructor')
+                ->orderBy('entry_time', 'DESC')
+                ->where('is_active', '1')
+                ->when($request->search_course, function ($query) use ($request) {
+                    $query->where('course_name', 'like', '%' . $request->search_course . '%');
+                })
+                ->get(),
             'categories' => Category::all(),
             'colors' => ['bg-primary', 'bg-secondary', 'bg-success', 'bg-danger', 'bg-warning', 'bg-info', 'bg-light', 'bg-dark'],
         ];
